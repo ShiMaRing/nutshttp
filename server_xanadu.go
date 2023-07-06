@@ -21,7 +21,10 @@ type Product struct {
 	Comment  string
 }
 
-const XANADU_BUCKET = "xanadu"
+const (
+	XANADU_BUCKET        = "xanadu"
+	TTL           uint32 = 1000 * 60 * 60 * 24 * 7
+)
 
 func (s *NutsHTTPServer) Search(context *gin.Context) {
 	//获取用户搜索关键词
@@ -40,18 +43,18 @@ func (s *NutsHTTPServer) Search(context *gin.Context) {
 		//存入数据库
 		productsJson, err := json.Marshal(products)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("json.Marshal: " + err.Error())
 		}
-		err = s.core.Update(XANADU_BUCKET, keyword, string(productsJson), -1)
+		err = s.core.Update(XANADU_BUCKET, keyword, string(productsJson), TTL)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Update: " + err.Error())
 		}
 		WriteSucc(context, products)
 	}
 	var products = make([]Product, 0)
 	err = json.Unmarshal([]byte(cache), &products)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Unmarshal: " + err.Error())
 	}
 	WriteSucc(context, products)
 }
