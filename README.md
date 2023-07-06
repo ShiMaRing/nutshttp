@@ -7,7 +7,7 @@ A http server for nutsdb
 Run http server and listen ON ":8080".
 
 ```bash
-go run examples/hello.go
+go run xanadu/hello.go
 ```
 
 **Check example data**

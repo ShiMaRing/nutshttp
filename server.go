@@ -63,6 +63,8 @@ func (s *NutsHTTPServer) initRouter() {
 
 	s.r.Use(Cors())
 
+	s.initXanaduRouter()
+
 	s.initSetRouter()
 
 	s.initListRouter()

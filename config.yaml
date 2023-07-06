@@ -1,7 +1,7 @@
 users:
   admin: admin
   user1: user1
-port: 8080
+port: 8099
 JWT:
   Secret: nutsdb
   Issuer: nuts-http
