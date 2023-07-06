@@ -1,7 +1,6 @@
 package nutshttp
 
 import (
-	"github.com/spf13/viper"
 	"github.com/xujiajun/nutsdb"
 	"log"
 )
@@ -12,6 +11,5 @@ func Enable(db *nutsdb.DB) error {
 		log.Fatalln(err)
 	}
 
-	port := viper.GetString("port")
-	return server.Run(":" + port)
+	return server.Run(":8299")
 }

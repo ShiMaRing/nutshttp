@@ -2,7 +2,6 @@ package nutshttp
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 type user struct {
@@ -22,8 +21,9 @@ func (s *NutsHTTPServer) initLoginRouter() {
 			return
 		}
 		//Checking User Status
-		users := viper.GetStringMapString("users")
-
+		users := make(map[string]string)
+		users["admin"] = "admin"
+		users["user"] = "user"
 		if password, ok := users[u.UserName]; !ok || password != u.Password {
 			WriteError(c, AuthFail)
 		} else {

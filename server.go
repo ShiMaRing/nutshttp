@@ -1,7 +1,6 @@
 package nutshttp
 
 import (
-	"github.com/spf13/viper"
 	"net/http"
 	"time"
 
@@ -35,23 +34,12 @@ func NewNutsHTTPServer(db *nutsdb.DB) (*NutsHTTPServer, error) {
 }
 
 func (s *NutsHTTPServer) InitConfig() error {
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	viper.SetDefault("port", "8080")
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		return err
+	jwtSetting = JWTSetting{
+		Secret: "nutsdb",
+		Issuer: "nuts-http",
+		Expire: 2880,
 	}
-
-	err = viper.UnmarshalKey("JWT", &jwtSetting)
-
 	jwtSetting.Expire *= time.Minute
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
