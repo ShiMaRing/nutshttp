@@ -49,7 +49,7 @@ func (s *NutsHTTPServer) Run(addr string) error {
 
 func (s *NutsHTTPServer) initRouter() {
 
-	s.r.Use(Cors())
+	s.r.Use(Cors(), gin.Recovery())
 
 	s.initXanaduRouter()
 

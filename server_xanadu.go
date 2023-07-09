@@ -46,16 +46,15 @@ func (s *NutsHTTPServer) Search(context *gin.Context) {
 			log.Fatal("json.Marshal: " + err.Error())
 		}
 		err = s.core.Update(XANADU_BUCKET, keyword, string(productsJson), TTL)
+
+		cache, err = s.core.Get(XANADU_BUCKET, keyword)
 		if err != nil {
-			log.Fatal("Update: " + err.Error())
+			log.Fatal("GET: " + err.Error())
 		}
-		WriteSucc(context, products)
+		WriteSucc(context, cache)
 	}
 	var products = make([]Product, 0)
-	err = json.Unmarshal([]byte(cache), &products)
-	if err != nil {
-		log.Println("Unmarshal: " + err.Error())
-	}
+	json.Unmarshal([]byte(cache), &products)
 	WriteSucc(context, products)
 }
 
@@ -72,7 +71,7 @@ func (s *NutsHTTPServer) crawSkuFromWeb(keyword string) []Product {
 			return
 		}
 		skuImgURL := "https:" + image
-		shopName := e.ChildText(".link a")
+		shopName := e.ChildAttr(".link a", "title")
 		if shopName == "" {
 			shopName = "自营店铺"
 		}
